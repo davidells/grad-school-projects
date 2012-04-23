@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation
+END
+times.txt
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/times.txt
+END
+tree.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/tree.c
+END
+list.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/list.h
+END
+dfsmain.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/dfsmain.c
+END
+randints.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/randints.c
+END
+tree.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/tree.h
+END
+stack.c
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/stack.c
+END
+index-search.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/index-search.c
+END
+stack.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/stack.h
+END
+list.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/list.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/Makefile
+END
+runtests.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/CodeArchive/!svn/ver/1/C/CS5330.Parallel.Projects/dfs-search-presentation/runtests.py
+END

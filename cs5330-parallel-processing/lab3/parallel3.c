@@ -1,0 +1,92 @@
+/* Written by David Ells
+ *
+ * This program was written as an assignment in Dr. Pettey's parallel
+ * processing course. It is intended to show a simple example of using
+ * MPI to pass messages among processes. The code is composed of a
+ * server section and a client section. The server section is executed
+ * only by rank 0, the other ranks become clients. The server reads
+ * a list of times (in seconds) from a file. It then serves the clients
+ * with the times (as they are requested). The client section simply
+ * requests a time and sleeps for that time, requesting again when done.
+ *
+ */
+
+#include <stdio.h>
+#include "mpi.h"
+
+#define LAB3_CONFIG_FILE "games.dat"
+#define NUMBER_OF_TIMES 10
+
+int getTimes(int* times, int times_sz);
+
+int main(int argc, char** argv)
+{
+    int i, source, thisTime;
+    int rank, ranksize;
+    MPI_Status status;
+    int times[NUMBER_OF_TIMES];
+    int END_CLIENT = -1;
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &ranksize);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+
+    if(rank == 0){
+        /* Server */
+
+        //Read config file
+        getTimes(times, NUMBER_OF_TIMES);
+
+        //Debug times
+        //for(i = 0; i < NUMBER_OF_TIMES; i++){
+        //    printf("%d\n", times[i]);
+        //}
+
+        //Accept messages and send replies until all times sent
+        for(i = 0; i < NUMBER_OF_TIMES; i++){
+            MPI_Recv(&source, 1, MPI_INT, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
+            MPI_Send(&times[i], 1, MPI_INT, source, 1, MPI_COMM_WORLD);
+        }
+
+        //Tell all clients we are done by sending each the END_CLIENT number
+        for(i = 0; i < ranksize - 1; i++){
+            MPI_Recv(&source, 1, MPI_INT, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
+            MPI_Send(&END_CLIENT, 1, MPI_INT, source, 1, MPI_COMM_WORLD);
+        }
+
+    } else {
+        /* Client */
+
+        //Request time and sleep, until END_CLIENT is recieved from server
+        while(1){
+            MPI_Send(&rank, 1, MPI_INT, 0, 1, MPI_COMM_WORLD);
+            MPI_Recv(&thisTime, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
+            if(thisTime == END_CLIENT){
+                break;
+            }
+            printf("%d is playing for %d seconds\n", rank, thisTime);
+            sleep(thisTime);
+        }
+    }
+
+    MPI_Finalize();
+    return 0;
+}
+
+int getTimes(int* times, int times_sz)
+{
+    int i, rc, thisTime;
+    FILE *configFile;
+
+    //Open times data file.
+    if((configFile = fopen(LAB3_CONFIG_FILE, "r")) == NULL)
+        perror("Error opening config file in server");
+
+    //Read times from file
+    i = 0;
+    while((i < times_sz) && (rc = fscanf(configFile, "%d", &thisTime)) != EOF){
+        times[i++] = thisTime;
+    }
+    fclose(configFile);
+}

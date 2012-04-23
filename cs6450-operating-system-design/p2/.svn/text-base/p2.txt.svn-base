@@ -1,0 +1,29 @@
+Any rank should be able to make a remote procedure call to a procedure
+at a remote rank.
+
+The API is defined in osdrpc.h which defines osdrpc_call.
+
+Turnin a dir and its contents including all nec C/C++ and header files
+and a makefile.  When I type:
+    make
+it should build osdrpc.o, libosd1.so, and libosd2.so.  libosd1.so should
+contain procedures named p1, p2, and p3.  They should all print a line
+giving their name.  p1 should return 1, p2 return 2, and p3 return 3.
+libosd2.so should contain procedures named p1 and p4.  They should also
+print a simple line.  This p1 should return 101 and p4 should return 104.
+p4 should take 3 arguments: int,string,int.  Additionally, p4 should
+print a second line containing the values of the received args.  As per 
+our conversation in class, we are going to assume that p4 will accept
+its arguments as a vector of pointers to the args, e.g.:
+    int p4(void *ptrs[])
+    {
+        int *i1 = ptrs[0];
+        char *c1 = ptrs[1];
+        int *i2 = ptrs[2];
+        ...
+    }
+
+When I type:
+    make test1
+it should compile a program named test1.c (which contains an include
+for osdrpc.h) linking it with osdrpc.o.

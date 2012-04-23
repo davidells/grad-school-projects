@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1
+END
+test.c
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/test.c
+END
+s1.c
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/s1.c
+END
+s2.c
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/s2.c
+END
+s3.c
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/s3.c
+END
+dsm.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/dsm.h
+END
+libdsm.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/libdsm.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/CodeArchive/!svn/ver/1/C/CS6450.OpSysDesign.Projects/p1/Makefile
+END
