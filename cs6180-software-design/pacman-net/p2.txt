@@ -1,0 +1,34 @@
+
+                             Software Design and Development
+                                       Fall 2007
+                                       Project 2
+
+
+
+turnin code:  sdd_p2
+
+point values:  20
+
+Enhance project 1 to support multiple players.  In addition to the engine,
+provide a server and client code named server.py and client.py, respectively.
+The server should support 2 or more players.  The first player to attach gets
+its pacman in the lower left.  The second should be in the upper right.  Others
+should be placed at some 'predetermined' locations.
+All players should be able to see all pacman characters.  Each pacman should be
+a new color.
+
+The interface to the server and client are as follows:
+    python server.py port_for_listening
+    python client.py host_of_server port_of_server
+The "arrow" keys on the keyboard should be used for navigation.
+A score should be displayed for the 'current' player.  It should be the number
+of pellets eaten by that pacman.
+
+Files containing images, sounds, etc. should be in the directory with the 
+python code.
+
+Use turnin to submit the program for grading.  Turnin a tar file containing
+a directory which in turn contains the necessary files.
+
+Grading will be done on the department's linuxNN systems.  You may be 
+called upon to run your program for the class.
