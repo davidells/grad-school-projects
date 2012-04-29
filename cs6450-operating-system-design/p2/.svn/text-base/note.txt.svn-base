@@ -1,6 +1,0 @@
-When running a compiled test with mpiexec, make sure
-to include the -env argument, specifying the LD_LIBRARY_PATH
-variable so that the shared libraries are accessed appropriately.
-
-Example mpiexec command:
-mpiexec -n 4 -env LD_LIBRARY_PATH `pwd` ./test
