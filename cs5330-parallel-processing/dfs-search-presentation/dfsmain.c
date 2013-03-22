@@ -25,10 +25,10 @@ const int DFS_DEBUG_PROGRESS = 0;
 //Global variables
 int DFS_NUM_THREADS, DFS_TREE_SIZE;
 int search_val, val_found;
-stack_t **thread_work_stack;
+dsp_stack_t **thread_work_stack;
 
 pthread_t *threads;
-pthread_mutex_t *thread_work_stack_mutex;
+pthread_mutex_t *thread_work_dsp_stack_mutex;
 pthread_mutex_t val_found_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 //Function prototypes
@@ -383,7 +383,7 @@ int search_tree_for_val(tree *t, int num_threads, int val)
 {
     int i;
     treenode *n;
-    stack_t *s;
+    dsp_stack_t *s;
     int *thread_id;
     int threads_ready = 1;
 
@@ -405,18 +405,18 @@ int search_tree_for_val(tree *t, int num_threads, int val)
     }
 
     //Allocate thread work stacks
-    thread_work_stack = (stack_t **)malloc(sizeof(stack_t *) * num_threads);
+    thread_work_stack = (dsp_stack_t **)malloc(sizeof(dsp_stack_t *) * num_threads);
     if(thread_work_stack == NULL){
         perror(PROGNAME "error: error allocating thread_stacks");
         exit(1);
     }
     for(i = 0; i < num_threads; i++){
-        thread_work_stack[i] = stack_create(t->node_count);
+        thread_work_stack[i] = dsp_stack_create(t->node_count);
     }
 
     //Allocate thread work stack mutexes
-    thread_work_stack_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * num_threads);
-    if(thread_work_stack_mutex == NULL){
+    thread_work_dsp_stack_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * num_threads);
+    if(thread_work_dsp_stack_mutex == NULL){
         perror(PROGNAME "error: error allocating thread_stacks");
         exit(1);
     }
@@ -424,14 +424,14 @@ int search_tree_for_val(tree *t, int num_threads, int val)
     //Initialize threads
     for(i = 0; i < num_threads; i++){
         thread_id[i] = i;
-        stack_init(thread_work_stack[i], t->node_count);
-        pthread_mutex_init(&thread_work_stack_mutex[i], NULL);
+        dsp_stack_init(thread_work_stack[i], t->node_count);
+        pthread_mutex_init(&thread_work_dsp_stack_mutex[i], NULL);
     }
 
 
     //Put root node on first thread's work stack.
     s = thread_work_stack[0];
-    stack_push(s, n);
+    dsp_stack_push(s, n);
 
 
     //Spread initial work across (some) other thread work stacks.
@@ -439,7 +439,7 @@ int search_tree_for_val(tree *t, int num_threads, int val)
         //treenode_print(n, stdout);
         i = threads_ready;
         if(n->right != NULL){
-            stack_push(thread_work_stack[i], n->right);
+            dsp_stack_push(thread_work_stack[i], n->right);
             threads_ready++;
         }
         n = n->left;
@@ -482,10 +482,10 @@ int search_tree_for_val(tree *t, int num_threads, int val)
     free(threads);
     free(thread_id);
     for(i = 0; i < num_threads; i++){
-        stack_destroy(thread_work_stack[i]);
+        dsp_stack_destroy(thread_work_stack[i]);
     }
     free(thread_work_stack);
-    free(thread_work_stack_mutex);
+    free(thread_work_dsp_stack_mutex);
 
     return 0;
 }
@@ -493,8 +493,8 @@ int search_tree_for_val(tree *t, int num_threads, int val)
 void *thread_traverse_tree(void *tid)
 {
     int id = *((int *)tid);
-    stack_t *s = thread_work_stack[id];
-    pthread_mutex_t *stack_mutex = &thread_work_stack_mutex[id];
+    dsp_stack_t *s = thread_work_stack[id];
+    pthread_mutex_t *dsp_stack_mutex = &thread_work_dsp_stack_mutex[id];
     treenode *n;
     int node_val;
 
@@ -505,9 +505,9 @@ void *thread_traverse_tree(void *tid)
         if(val_found) break;
 
         //Get next node from my stack
-        pthread_mutex_lock(stack_mutex);
-            n = stack_pop(s);
-        pthread_mutex_unlock(stack_mutex);
+        pthread_mutex_lock(dsp_stack_mutex);
+            n = dsp_stack_pop(s);
+        pthread_mutex_unlock(dsp_stack_mutex);
 
         //If my stack is empty, get next available node from another stack.
         if(n == NULL){
@@ -542,9 +542,9 @@ void *thread_traverse_tree(void *tid)
             }
 
             if(n->right != NULL){
-                pthread_mutex_lock(stack_mutex);
-                    stack_push(s, n->right);
-                pthread_mutex_unlock(stack_mutex);
+                pthread_mutex_lock(dsp_stack_mutex);
+                    dsp_stack_push(s, n->right);
+                pthread_mutex_unlock(dsp_stack_mutex);
             }
             n = n->left;
         }
@@ -557,7 +557,7 @@ void *thread_traverse_tree(void *tid)
 treenode *get_next_available_treenode(int my_id)
 {
     int r, i, j;
-    stack_t *s;
+    dsp_stack_t *s;
     treenode *n = NULL;
 
     r = randint(DFS_NUM_THREADS);
@@ -570,13 +570,13 @@ treenode *get_next_available_treenode(int my_id)
 
         //Check thread's stack for work
         s = thread_work_stack[j];
-        pthread_mutex_lock(&thread_work_stack_mutex[j]);
-            if(!stack_isempty(s)){
-                n = stack_del_first(s);
+        pthread_mutex_lock(&thread_work_dsp_stack_mutex[j]);
+            if(!dsp_stack_isempty(s)){
+                n = dsp_stack_del_first(s);
                 thread_debug(2, "thread %d: found work in thread %d's stack!\n",
                                 my_id, j);
             }
-        pthread_mutex_unlock(&thread_work_stack_mutex[j]);
+        pthread_mutex_unlock(&thread_work_dsp_stack_mutex[j]);
 
     }
 

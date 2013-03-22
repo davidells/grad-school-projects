@@ -8,17 +8,17 @@
 
 typedef struct {
     list_t *list;
-} stack_t;
+} dsp_stack_t;
 
-void stack_init(stack_t *, listcount_t);
-stack_t *stack_create(listcount_t);
-void stack_destroy(stack_t *);
-void stack_destroy_nodes(stack_t *);
+void dsp_stack_init(dsp_stack_t *, listcount_t);
+dsp_stack_t *dsp_stack_create(listcount_t);
+void dsp_stack_destroy(dsp_stack_t *);
+void dsp_stack_destroy_nodes(dsp_stack_t *);
 
-int stack_push(stack_t *, void *);
-void *stack_pop(stack_t *);
-void *stack_top(stack_t *);
-void *stack_del_first(stack_t *);
-int stack_size(stack_t *);
-int stack_isempty(stack_t *);
+int dsp_stack_push(dsp_stack_t *, void *);
+void *dsp_stack_pop(dsp_stack_t *);
+void *dsp_stack_top(dsp_stack_t *);
+void *dsp_stack_del_first(dsp_stack_t *);
+int dsp_stack_size(dsp_stack_t *);
+int dsp_stack_isempty(dsp_stack_t *);
 
