@@ -1,4 +1,6 @@
 *.swp
 *.o
 dfs-search
+index-search
+randints
 *M.txt
