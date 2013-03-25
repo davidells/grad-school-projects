@@ -90,7 +90,9 @@ list_t *list_create(listcount_t maxcount)
 
 void list_destroy(list_t *list)
 {
-    assert (list_isempty(list));
+    if (! list_isempty(list)) {
+        list_destroy_nodes(list);
+    }
     free(list);
 }
 

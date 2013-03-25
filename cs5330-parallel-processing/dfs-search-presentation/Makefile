@@ -1,6 +1,6 @@
 CFLAGS = -Wall 
 LDFLAGS = -g
-CC = gcc
+CC = gcc 
 PROG_NAME = dfs-search
 SOURCES = dfsmain.c tree.c stack.c list.c
 OBJECTS = $(SOURCES:.c=.o)
