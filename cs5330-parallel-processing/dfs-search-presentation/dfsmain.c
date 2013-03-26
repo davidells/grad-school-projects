@@ -385,6 +385,8 @@ int search_tree_for_val(tree *t, int num_threads, int val)
     treenode *n;
     dsp_stack_t *s;
     int *thread_id;
+    int threads_ready = 1;
+    int node_val;
 
     n = t->head;
     if(n == NULL) return -1;
@@ -427,7 +429,27 @@ int search_tree_for_val(tree *t, int num_threads, int val)
     }
 
 
-    //Put root node on first thread's work stack.
+    //Spread initial work across other thread work stacks
+    while(n != NULL && threads_ready < num_threads) {
+        if(n->right != NULL) {
+            dsp_stack_push(thread_work_stack[threads_ready], n->right);
+            threads_ready++;
+        }
+        //Heck, we might get lucky and find it in this predistribution step
+        if(n->data != NULL){
+            node_val = *((int *)n->data);
+            if(node_val == search_val){
+                thread_debug(1, "main thread: found value during predistribution step!\n");
+                printf("%d\t\t%d\t\t%f\t\t%d\n", DFS_TREE_SIZE, num_threads, 0.0, 1);
+                return 0;
+            }
+        }
+        n = n->left;
+    }
+
+    thread_debug(1, "main thread: predistribution step checked %d nodes\n", threads_ready - 1);
+
+    //Put current node (post distribution) on first thread's work stack.
     s = thread_work_stack[0];
     dsp_stack_push(s, n);
 
